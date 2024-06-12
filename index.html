@@ -4,36 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Protein Structure Visualization</title>
-    <script type="module">
-        import { PluginContext, DefaultPluginSpec } from 'https://unpkg.com/molstar/build/viewer/molstar.js';
-
-        window.addEventListener('load', async () => {
-            const viewer = new PluginContext(DefaultPluginSpec());
-            viewer.init(document.getElementById('app'), {
-                layout: {
-                    initial: {
-                        isExpanded: false,
-                        showControls: true,
-                        controlsDisplay: 'inside',
-                    }
-                },
-                structure: {
-                    showAxes: true,
-                    showBallsAndSticks: true,
-                },
-            });
-
-            await viewer.loadStructureFromUrl('./protein.pdb');
-            viewer.plugin.managers.structure.component.applyTheme('polymer-id');
-        });
-    </script>
+    <script src="https://unpkg.com/ngl@0.10.4/build/ngl.js"></script>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; }
-        #app { width: 100%; max-width: 800px; height: 600px; margin: auto; }
+        #viewport { width: 100%; max-width: 800px; height: 600px; margin: auto; }
     </style>
 </head>
 <body>
     <h1>Protein Structure Visualization</h1>
-    <div id="app"></div>
+    <div id="viewport"></div>
+    <script>
+        const stage = new NGL.Stage("viewport");
+        stage.loadFile("./protein.pdb", { defaultRepresentation: true }).then(function (o) {
+            o.addRepresentation("cartoon", { color: "bfactor" });
+            o.autoView();
+        });
+    </script>
 </body>
 </html>
