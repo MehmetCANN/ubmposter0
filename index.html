@@ -18,14 +18,14 @@
         var Info = {
             width: 900,   // Set the width of the viewer window
             height: 900,  // Set the height of the viewer window
-            debug: true,  // Enable debugging (check console for errors)
-            color: "white",  // Set background color of viewer
+            debug: true,
+            color: "white",
             addSelectionOptions: false,
-            use: "HTML5",  // Use HTML5 mode for rendering
-            j2sPath: "https://chemapps.stolaf.edu/jmol/jsmol/j2s",  // Path to JSmol's JavaScript files
+            use: "HTML5",
+            j2sPath: "https://chemapps.stolaf.edu/jmol/jsmol/j2s",
             script: `
                 load "protein.pdb"; 
-                cartoon only;
+                cartoon only; 
                 color relativeTemperature;
             `,
             readyFunction: null,
