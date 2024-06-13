@@ -12,22 +12,17 @@
 </head>
 <body>
     <h1>Protein Structure Visualization</h1>
-    <div id="viewer" class='viewer_3Dmoljs'
-         data-pdb='protein.pdb'
-         data-style='cartoon:color=spectrum'></div>
+    <div id="viewer" class='viewer_3Dmoljs'></div>
 
     <script>
-        // Load 3Dmol viewer when DOM is fully loaded
         document.addEventListener('DOMContentLoaded', function () {
             console.log('DOM fully loaded and parsed');
-            // Create viewer instance
             var element = document.getElementById('viewer');
             var config = { backgroundColor: 'white' };
             var viewer = $3Dmol.createViewer(element, config);
             console.log('3Dmol viewer created');
 
-            // Fetch and load PDB data
-            fetch('protein.pdb')
+            fetch('protein.pdb') // Fetching locally from the root of your GitHub repo
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -39,9 +34,9 @@
                     console.log('PDB data loaded');
                     viewer.addModel(data, 'pdb');
 
-                    // Apply style to the entire structure
+                    // Apply style to the entire structure (example: cartoon style)
                     viewer.setStyle({}, {
-                        cartoon: { color: 'spectrum' } // Apply spectrum coloring to the entire structure
+                        cartoon: {}
                     });
 
                     // Zoom to fit the structure
