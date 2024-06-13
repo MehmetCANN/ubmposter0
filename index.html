@@ -16,14 +16,14 @@
 
     <script type="text/javascript">
         var Info = {
-            width: 900,   // Pencere genişliği
-            height: 900,   // Pencere yüksekliği
-            debug: true,
-            color: "black",
+            width: 1200,   // Pencere genişliği
+            height: 400,   // Pencere yüksekliği
+            debug: false,
+            color: "white",
             addSelectionOptions: false,
             use: "HTML5",
             j2sPath: "https://chemapps.stolaf.edu/jmol/jsmol/j2s",
-            script: "load 'protein.pdb'; cartoon only; color structure;",
+            script: "load 'protein.pdb'; color temperature; colorScheme 'rwb';",
             readyFunction: null,
             disableJ2SLoadMonitor: true,
             disableInitialConsole: true
