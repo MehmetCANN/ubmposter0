@@ -33,10 +33,10 @@
                     console.log('PDB data loaded');
                     viewer.addModel(data, 'pdb');
                     
-                    // Applying color by B-factor using colorscheme with B-factor gradient
+                    // Applying color by B-factor using colorscheme with gradient
                     viewer.setStyle({}, {
                         cartoon: {
-                            color: $3Dmol.bfactorColor('roygb') // Using 'roygb' gradient for B-factor coloring
+                            color: $3Dmol.Gradient.RWB(0, 100) // Using Red-White-Blue gradient for B-factor coloring
                         }
                     });
                     viewer.zoomTo();
