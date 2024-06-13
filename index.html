@@ -32,7 +32,16 @@
                 .then(data => {
                     console.log('PDB data loaded');
                     viewer.addModel(data, 'pdb');
-                    viewer.setStyle({}, { cartoon: { colorfunc: $3Dmol.propColorByBfactor() } });
+                    
+                    // Applying color by B-factor
+                    viewer.setStyle({}, {
+                        cartoon: {
+                            colorscheme: {
+                                prop: 'b',
+                                gradient: 'roygb'
+                            }
+                        }
+                    });
                     viewer.zoomTo();
                     viewer.render();
                     console.log('3Dmol viewer rendered');
