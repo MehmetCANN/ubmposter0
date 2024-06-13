@@ -4,42 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Protein Structure Visualization</title>
-    <script type="module">
-        import { PluginContext, DefaultPluginSpec } from 'https://unpkg.com/molstar/build/viewer/molstar.js';
-        import { PluginCommands } from 'https://unpkg.com/molstar/build/mol-plugin/commands.js';
-        import { Color } from 'https://unpkg.com/molstar/build/mol-util/color.js';
-
-        window.addEventListener('load', async () => {
-            const plugin = new PluginContext(DefaultPluginSpec());
-            await plugin.initViewer(document.getElementById('app'));
-
-            const url = './protein.pdb';
-            const data = await plugin.builders.data.download({ url: url }, { state: { isGhost: true } });
-            const trajectory = await plugin.builders.structure.parseTrajectory(data, 'pdb');
-            const model = await plugin.builders.structure.createModel(trajectory);
-            const structure = await plugin.builders.structure.createStructure(model);
-
-            plugin.managers.structure.hierarchy.add(structure);
-
-            // Apply cartoon representation and color by B-factor
-            const colorTheme = plugin.managers.structure.colorThemes.create('bfactor', { palette: { name: 'rainbow' } });
-            await plugin.builders.structure.representation.addRepresentation({
-                type: 'cartoon',
-                color: colorTheme,
-                structure
-            });
-
-            // Auto-zoom to the structure
-            PluginCommands.Camera.Reset(plugin, {});
-        });
-    </script>
+    <script src="https://3dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; }
-        #app { width: 100%; max-width: 800px; height: 600px; margin: auto; }
+        #viewer { width: 100%; height: 600px; }
     </style>
 </head>
 <body>
     <h1>Protein Structure Visualization</h1>
-    <div id="app"></div>
+    <div id="viewer"></div>
+    <script>
+        let element = document.getElementById('viewer');
+        let config = { backgroundColor: 'white' };
+        let viewer = $3Dmol.createViewer(element, config);
+
+        // Load PDB file
+        $.get('protein.pdb', function(data) {
+            viewer.addModel(data, 'pdb');
+            viewer.setStyle({}, { cartoon: { colorfunc: $3Dmol.propColorByBfactor() } });
+            viewer.zoomTo();
+            viewer.render();
+        });
+    </script>
 </body>
 </html>
