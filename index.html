@@ -1,30 +1,35 @@
-html_template = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protein Viewer</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/1.7.1/3Dmol-min.js"></script>
+    <title>Protein Structure Visualization</title>
+    <script type="text/javascript" src="https://chemapps.stolaf.edu/jmol/jsmol/JSmol.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        #jsmol { width: 100%; max-width: 600px; margin: auto; }
+    </style>
 </head>
 <body>
-    <div id="viewer" style="width: 1200px; height: 900px;"></div>
-    <script>
-        fetch('protein.pdb')
-            .then(response => response.text())
-            .then(pdbData => {
-                var viewer = $3Dmol.createViewer("viewer", {{width: 1200, height: 900}});
-                viewer.addModel(pdbData, "pdb");
-                viewer.setStyle({{cartoon: {{colorscheme: {{prop: 'b', gradient: 'roygb'}}}}}});
-                viewer.zoomTo();
-                viewer.render();
-            })
-            .catch(error => console.error('Error loading PDB file:', error));
+    <h1>Protein Structure Visualization</h1>
+    <div id="jsmol"></div>
+
+    <script type="text/javascript">
+        var Info = {
+            width: 600,
+            height: 400,
+            debug: false,
+            color: "white",
+            addSelectionOptions: false,
+            use: "HTML5",
+            j2sPath: "https://chemapps.stolaf.edu/jmol/jsmol/j2s",
+            script: "load 'protein.pdb'; color bfactor;",
+            readyFunction: null,
+            disableJ2SLoadMonitor: true,
+            disableInitialConsole: true
+        };
+        Jmol.getApplet("jsmolApplet", Info);
+        document.getElementById("jsmol").innerHTML = Jmol.getAppletHtml("jsmolApplet");
     </script>
 </body>
 </html>
-"""
-
-# Save the generated HTML
-with open("index.html", "w") as file:
-    file.write(html_template)
