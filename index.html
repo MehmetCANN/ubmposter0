@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Protein Structure Visualization</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://3dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; }
@@ -14,16 +15,18 @@
     <h1>Protein Structure Visualization</h1>
     <div id="viewer"></div>
     <script>
-        let element = document.getElementById('viewer');
-        let config = { backgroundColor: 'white' };
-        let viewer = $3Dmol.createViewer(element, config);
+        $(document).ready(function() {
+            let element = $('#viewer');
+            let config = { backgroundColor: 'white' };
+            let viewer = $3Dmol.createViewer(element[0], config);
 
-        // Load PDB file
-        $.get('protein.pdb', function(data) {
-            viewer.addModel(data, 'pdb');
-            viewer.setStyle({}, { cartoon: { colorfunc: $3Dmol.propColorByBfactor() } });
-            viewer.zoomTo();
-            viewer.render();
+            // Load PDB file
+            $.get('protein.pdb', function(data) {
+                viewer.addModel(data, 'pdb');
+                viewer.setStyle({}, { cartoon: { colorfunc: $3Dmol.propColorByBfactor() } });
+                viewer.zoomTo();
+                viewer.render();
+            });
         });
     </script>
 </body>
