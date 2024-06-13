@@ -7,20 +7,26 @@
     <script src="https://3dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; }
-        #viewer { width: 100%; height: 600px; }
+        .viewer_3Dmoljs { height: 600px; width: 100%; }
     </style>
 </head>
 <body>
     <h1>Protein Structure Visualization</h1>
-    <div id="viewer"></div>
+    <div id="viewer" class='viewer_3Dmoljs'
+         data-pdb='protein.pdb'
+         data-style='cartoon:color=spectrum'></div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
+        // Load 3Dmol viewer when DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function () {
             console.log('DOM fully loaded and parsed');
-            const element = document.getElementById('viewer');
-            const config = { backgroundColor: 'black' };
-            const viewer = $3Dmol.createViewer(element, config);
+            // Create viewer instance
+            var element = document.getElementById('viewer');
+            var config = { backgroundColor: 'white' };
+            var viewer = $3Dmol.createViewer(element, config);
             console.log('3Dmol viewer created');
 
+            // Fetch and load PDB data
             fetch('protein.pdb')
                 .then(response => {
                     if (!response.ok) {
@@ -31,18 +37,11 @@
                 })
                 .then(data => {
                     console.log('PDB data loaded');
-
-                    // Add model to viewer
                     viewer.addModel(data, 'pdb');
 
-                    // Applying color by B-factor using the correct property
+                    // Apply style to the entire structure
                     viewer.setStyle({}, {
-                        cartoon: {
-                            colorscheme: {
-                                prop: 'b',
-                                gradient: 'spectrum' // Using 'roygb' gradient for B-factor coloring
-                            }
-                        }
+                        cartoon: { color: 'spectrum' } // Apply spectrum coloring to the entire structure
                     });
 
                     // Zoom to fit the structure
