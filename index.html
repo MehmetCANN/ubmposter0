@@ -4,50 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Protein Structure Visualization</title>
-    <script src="https://3dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+    <script type="text/javascript" src="https://chemapps.stolaf.edu/jmol/jsmol/JSmol.min.js"></script>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; }
-        .viewer_3Dmoljs { height: 600px; width: 100%; }
+        #jsmol { width: 100%; max-width: 600px; margin: auto; }
     </style>
 </head>
 <body>
     <h1>Protein Structure Visualization</h1>
-    <div id="viewer" class='viewer_3Dmoljs'></div>
+    <div id="jsmol"></div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            console.log('DOM fully loaded and parsed');
-            var element = document.getElementById('viewer');
-            var config = { backgroundColor: 'white' };
-            var viewer = $3Dmol.createViewer(element, config);
-            console.log('3Dmol viewer created');
-
-            fetch('protein.pdb') // Fetching locally from the root of your GitHub repo
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    console.log('PDB file fetched successfully');
-                    return response.text();
-                })
-                .then(data => {
-                    console.log('PDB data loaded');
-                    viewer.addModel(data, 'pdb');
-
-                    // Apply cartoon style with spectrum coloring
-                    viewer.setStyle({}, {
-                        cartoon: { color: 'spectrum' }
-                    });
-
-                    // Zoom to fit the structure
-                    viewer.zoomTo();
-
-                    // Render the viewer
-                    viewer.render();
-                    console.log('3Dmol viewer rendered');
-                })
-                .catch(error => console.error('Error loading PDB file:', error));
-        });
+    <script type="text/javascript">
+        var Info = {
+            width: 600,
+            height: 400,
+            debug: false,
+            color: "white",
+            addSelectionOptions: false,
+            use: "HTML5",
+            j2sPath: "https://chemapps.stolaf.edu/jmol/jsmol/j2s",
+            script: "load 'protein.pdb'; color bfactor;",
+            readyFunction: null,
+            disableJ2SLoadMonitor: true,
+            disableInitialConsole: true
+        };
+        Jmol.getApplet("jsmolApplet", Info);
+        document.getElementById("jsmol").innerHTML = Jmol.getAppletHtml("jsmolApplet");
     </script>
 </body>
 </html>
