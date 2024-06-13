@@ -5,32 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Protein Structure Visualization</title>
     <script type="module">
-        import { createPlugin } from 'https://unpkg.com/molstar/build/viewer/molstar.js';
+        import { PluginContext, DefaultPluginSpec } from 'https://unpkg.com/molstar/build/viewer/molstar.js';
+        import { PluginCommands } from 'https://unpkg.com/molstar/build/mol-plugin/commands.js';
+        import { Color } from 'https://unpkg.com/molstar/build/mol-util/color.js';
 
         window.addEventListener('load', async () => {
-            const viewer = await createPlugin(document.getElementById('app'), {
-                layoutIsExpanded: false,
-                layoutShowControls: true,
-                layoutShowRemoteState: false,
-                layoutShowSequence: false,
-                layoutShowLog: true,
-                layoutShowLeftPanel: true,
-                viewportShowExpand: true,
-                viewportShowSelectionMode: true,
-                viewportShowAnimation: true
-            });
+            const plugin = new PluginContext(DefaultPluginSpec());
+            await plugin.initViewer(document.getElementById('app'));
 
             const url = './protein.pdb';
-            const data = await viewer.loadStructureFromUrl(url);
-            const model = data.structure.models[0];
+            const data = await plugin.builders.data.download({ url: url }, { state: { isGhost: true } });
+            const trajectory = await plugin.builders.structure.parseTrajectory(data, 'pdb');
+            const model = await plugin.builders.structure.createModel(trajectory);
+            const structure = await plugin.builders.structure.createStructure(model);
 
-            viewer.plugin.managers.structure.component.setRepresentation(model, {
+            plugin.managers.structure.hierarchy.add(structure);
+
+            // Apply cartoon representation and color by B-factor
+            const colorTheme = plugin.managers.structure.colorThemes.create('bfactor', { palette: { name: 'rainbow' } });
+            await plugin.builders.structure.representation.addRepresentation({
                 type: 'cartoon',
-                color: {
-                    name: 'bfactor',
-                    params: { palette: { name: 'rainbow', params: {} } }
-                }
+                color: colorTheme,
+                structure
             });
+
+            // Auto-zoom to the structure
+            PluginCommands.Camera.Reset(plugin, {});
         });
     </script>
     <style>
