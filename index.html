@@ -15,17 +15,27 @@
     <div id="viewer"></div>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
+            console.log('DOM fully loaded and parsed');
             const element = document.getElementById('viewer');
             const config = { backgroundColor: 'white' };
             const viewer = $3Dmol.createViewer(element, config);
+            console.log('3Dmol viewer created');
 
             fetch('protein.pdb')
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    console.log('PDB file fetched successfully');
+                    return response.text();
+                })
                 .then(data => {
+                    console.log('PDB data loaded');
                     viewer.addModel(data, 'pdb');
                     viewer.setStyle({}, { cartoon: { colorfunc: $3Dmol.propColorByBfactor() } });
                     viewer.zoomTo();
                     viewer.render();
+                    console.log('3Dmol viewer rendered');
                 })
                 .catch(error => console.error('Error loading PDB file:', error));
         });
