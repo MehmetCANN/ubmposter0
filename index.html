@@ -17,7 +17,7 @@
         document.addEventListener('DOMContentLoaded', (event) => {
             console.log('DOM fully loaded and parsed');
             const element = document.getElementById('viewer');
-            const config = { backgroundColor: 'black' };
+            const config = { backgroundColor: 'white' };
             const viewer = $3Dmol.createViewer(element, config);
             console.log('3Dmol viewer created');
 
@@ -37,7 +37,7 @@
 
                     // Applying color by B-factor using the correct property
                     viewer.setStyle({}, {
-                        cartoon: {
+                        surface: {
                             colorscheme: {
                                 prop: 'b',
                                 gradient: 'roygb' // Using 'roygb' gradient for B-factor coloring
