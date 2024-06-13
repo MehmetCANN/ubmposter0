@@ -35,12 +35,12 @@
                     // Add model to viewer
                     viewer.addModel(data, 'pdb');
 
-                    // Applying style directly using setStyle
+                    // Applying color by B-factor using the correct property
                     viewer.setStyle({}, {
                         cartoon: {
                             colorscheme: {
                                 prop: 'b',
-                                gradient: 'roygb' // or any other gradient you prefer
+                                gradient: 'roygb' // Using 'roygb' gradient for B-factor coloring
                             }
                         }
                     });
