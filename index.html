@@ -16,18 +16,26 @@
 
     <script type="text/javascript">
         var Info = {
-            width: 750,   // Pencere genişliği
-            height: 500,   // Pencere yüksekliği
-            debug: true,
-            color: "black",
-            addSelectionOptions: true,
-            use: "HTML5",
-            j2sPath: "https://chemapps.stolaf.edu/jmol/jsmol/j2s",
-            script: "load 'protein.pdb'; color temperature; colorScheme 'rwb';",
+            width: 900,   // Set the width of the viewer window
+            height: 900,  // Set the height of the viewer window
+            debug: true,  // Enable debugging (check console for errors)
+            color: "white",  // Set background color of viewer
+            addSelectionOptions: false,
+            use: "HTML5",  // Use HTML5 mode for rendering
+            j2sPath: "https://chemapps.stolaf.edu/jmol/jsmol/j2s",  // Path to JSmol's JavaScript files
+            script: `
+                load "protein.pdb"; 
+                cartoon only;
+                color [atom] relativeTemperature;
+            `,
             readyFunction: null,
             disableJ2SLoadMonitor: true,
             disableInitialConsole: true
         };
+
+Jmol.getApplet("jsmolApplet", Info);
+document.getElementById("jsmol").innerHTML = Jmol.getAppletHtml("jsmolApplet");
+
         Jmol.getApplet("jsmolApplet", Info);
         document.getElementById("jsmol").innerHTML = Jmol.getAppletHtml("jsmolApplet");
     </script>
