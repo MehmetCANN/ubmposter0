@@ -34,9 +34,9 @@
                     console.log('PDB data loaded');
                     viewer.addModel(data, 'pdb');
 
-                    // Apply style to the entire structure (example: cartoon style)
+                    // Apply cartoon style with spectrum coloring
                     viewer.setStyle({}, {
-                        cartoon: {}
+                        cartoon: { color: 'spectrum' }
                     });
 
                     // Zoom to fit the structure
