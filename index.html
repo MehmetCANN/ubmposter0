@@ -31,15 +31,24 @@
                 })
                 .then(data => {
                     console.log('PDB data loaded');
+
+                    // Add model to viewer
                     viewer.addModel(data, 'pdb');
-                    
-                    // Applying color by B-factor using colorscheme with gradient
+
+                    // Applying style directly using setStyle
                     viewer.setStyle({}, {
                         cartoon: {
-                            color: $3Dmol.Gradient.RWB(0, 100) // Using Red-White-Blue gradient for B-factor coloring
+                            colorscheme: {
+                                prop: 'b',
+                                gradient: 'roygb' // or any other gradient you prefer
+                            }
                         }
                     });
+
+                    // Zoom to fit the structure
                     viewer.zoomTo();
+
+                    // Render the viewer
                     viewer.render();
                     console.log('3Dmol viewer rendered');
                 })
